@@ -20,10 +20,11 @@ import { PostComponent } from './container/post.component';
 import { HttpService } from './services/http.service';
 import { ApiService } from './services/api.service';
 import { LoginComponent } from './components/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { rootReducer } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { UpdateUserComponent } from './components/update-user.component';
 
 
 @NgModule({
@@ -38,12 +39,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     UserListComponent,
     UserCardComponent,
     PostComponent,
-    LoginComponent
+    LoginComponent,UpdateUserComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule, 
+    RouterModule, ReactiveFormsModule,
     MaterialModule,FormsModule,HttpClientModule, StoreModule.forRoot(rootReducer), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [

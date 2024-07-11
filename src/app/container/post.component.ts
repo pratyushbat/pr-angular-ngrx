@@ -3,11 +3,13 @@ import {User} from '../models/user';
 import {YoutubeRepository} from '../services/youtube-repository';
 import {Post} from '../models/post';
 import {takeWhile} from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'youtube-post',
   template: `
    post componennty
+    <youtube-user-list  [users]="this.users"></youtube-user-list>
   `,
   styles: [``]
 })
@@ -17,27 +19,21 @@ export class PostComponent implements OnInit {
   isAlive = true;
   loading = false;
   error = false;
+  users: any[]=[];
 
   constructor(private youtubeRepository: YoutubeRepository) {
   }
 
   ngOnInit() {
-    this.fetchData();
+    this.getInitUsers();
   }
 
-  fetchData() {
-    // const observer$ = this.youtubeRepository.getAllPost();
-    // const postData$ = observer$[1];
-    // const loading$ = observer$[0];
-    // const error$ = observer$[2];
-    // postData$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
-    //   this.postList = data;
-    // });
-    // loading$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
-    //   this.loading = data;
-    // });
-    // error$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
-    //   this.error = data;
-    // });
+  getInitUsers() {
+    const observer$: [Observable<boolean>, Observable<User[]>, Observable<boolean>] = this.youtubeRepository.getUserList();
+    const userData$: Observable<User[]> = observer$[1];
+    userData$.subscribe(((data: any) => { this.users = data }));
+
   }
+
+ 
 }

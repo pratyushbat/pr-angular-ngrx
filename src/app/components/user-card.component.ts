@@ -4,6 +4,7 @@ import {YoutubeRepository} from '../services/youtube-repository';
 import {MatDialog} from '@angular/material/dialog';
 // import {UpdateUserComponent} from './update-user.component';
 import {Router} from '@angular/router';
+import { UpdateUserComponent } from './update-user.component';
 
 @Component({
   selector: 'youtube-user-card',
@@ -17,7 +18,7 @@ import {Router} from '@angular/router';
   
   `,
   styles: [`.mat-mdc-card{
-  background-color:gold ;
+  background-color: #e5c3c3cc; ;
 }  .mat-mdc-raised-button:not(:disabled) {
     background-color: #5a5c67;
 } .mat-mdc-raised-button:not(:disabled) {
@@ -33,13 +34,13 @@ export class UserCardComponent {
   }
 
   delete() {
-    // this.youtubeRepo.deleteUser(this.user.id);
+     this.youtubeRepo.deleteUser(this.user.id);
   }
 
   update() {
-    // this.dialog.open(UpdateUserComponent, {
-    //   width: '256px', data: this.user
-    // });
+    this.dialog.open(UpdateUserComponent, {
+      width: '456px',height:'456px', data: this.user
+    });
   }
 
   open() {

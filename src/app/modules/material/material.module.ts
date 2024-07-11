@@ -8,11 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLineModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbar } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const materialComps=[
   CommonModule,MatInputModule,
   MatCardModule, MatIconModule, MatLineModule,MatRadioModule,MatProgressSpinnerModule,
-  MatButtonModule,MatToolbar
+  MatButtonModule,MatToolbar,MatFormFieldModule,MatDialogModule
 
 ]
 @NgModule({

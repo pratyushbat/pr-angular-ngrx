@@ -1,30 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { YoutubeRepository } from '../services/youtube-repository';
-import { takeWhile } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from '../services/api.service';
-import { getUserLoaded, getUserLoading, getUsers, RootReducerState } from '../reducers';
-import { Store } from '@ngrx/store';
-import { UserListRequestAction, UserListSuccessAction } from '../actions/user-action';
-import { combineLatest } from 'rxjs';
-// import {UpdateUserComponent} from '../components/update-user.component';
+import { Observable, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'youtube-users',
   template: `
-      <button class="mt-2" *ngIf="!this.loading && !this.error" (click)="addUser()" mat-raised-button color="primary">Add User</button>
-      <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <youtube-user-list [users]="this.users"></youtube-user-list>
-      <mat-spinner *ngIf="!this.loading"></mat-spinner>      
+    <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px">
+      <youtube-user-list *ngIf="!this.loading && !this.error" [users]="this.users"></youtube-user-list>
+      <mat-spinner *ngIf="this.loading"></mat-spinner>
       <youtube-error (reload)="this.tryAgain()" *ngIf="this.error && !loading"></youtube-error>
-      
+      <button *ngIf="!this.loading && !this.error" (click)="addUser()" mat-raised-button color="primary">Add User</button>
     </div>
   `,
   styles: [`.mt-2{ margin-top:10px;margin-bottom:10px}`]
 })
 
-export class UsersComponent {
+export class UsersComponent implements OnDestroy {
   users: User[] = [];
   loading = false;
   error = false;
@@ -35,44 +27,27 @@ export class UsersComponent {
   }
 
   ngOnInit() {
-    this.fetchData();
+    this.getInitUsers();
   }
 
 
   ngOnDestroy() {
     this.isAlive = false;
   }
-  
-  fetchData() {
-    const userData$ = this.youtubeRepository.getUserList()[1];
-    userData$.subscribe(((data: any) => { this.users = data }))
+
+  getInitUsers() {
+    const observer$: [Observable<boolean>, Observable<User[]>, Observable<boolean>] = this.youtubeRepository.getUserList();
+    const userData$: Observable<User[]> = observer$[1];
+    const loading$: Observable<boolean> = observer$[0];
+    const userError$: Observable<boolean> = observer$[2];
+    userData$.pipe(takeWhile(()=>this.isAlive)).subscribe(((data: any) => { this.users = data }));
+
+    loading$.pipe(takeWhile(()=>this.isAlive)).subscribe(data => this.loading = data);
+    userError$.pipe(takeWhile(()=>this.isAlive)).subscribe(data => {  this.error = data; });
   }
 
-  // fetchData() {
-  // const loading$ = this.store.select(getUserLoading);
-  // const loaded$ = this.store.select(getUserLoaded);
-  // const getUserData$ = this.store.select(getUsers);
-
-  // combineLatest([loaded$,loading$]).subscribe((data)=>{
-  //   if(!data[0] && !data[1]){
-  //     this.apiService.getAllUser().subscribe((data2: any) => {
-  //       this.store.dispatch(new UserListRequestAction())
-  //       setTimeout(()=>{
-  //         this.users = data2.users;
-  //         this.store.dispatch(new UserListSuccessAction({ data: data2.users }))
-  //       },3000);
-
-  //     });
-  //   }
-  // })
-  // getUserData$.subscribe((data:any)=>{
-  //   this.users = data;
-  // })
-  // }
-
-
   tryAgain() {
-    // this.youtubeRepository.getUserList(true);
+    this.youtubeRepository.getUserList(true);
   }
 
   addUser() {
@@ -80,6 +55,7 @@ export class UsersComponent {
     //   width: '256px'
     // });
   }
+
 }
 
 
