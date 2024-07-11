@@ -18,6 +18,9 @@ export class ApiService {
   getUser(id: number): Observable<User> {
     return this.httpService.get('/users/' + id);
   }
+  loginUser(body:any): Observable<any> {
+    return this.httpService.post('/auth/login',body);
+  }
 
   getAllPost(): Observable<Post[]> {
     const data: Post[] = [{

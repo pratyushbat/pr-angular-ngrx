@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class HttpService {
-  private baseUrl = 'https://jsonplaceholder.typicode.com';
+  private baseUrl = 'https://dummyjson.com';
   AUTH_TOKEN = 'auth_token';
 
   constructor(private httpClient: HttpClient) {
@@ -15,6 +15,11 @@ export class HttpService {
     const data = {params, headers: this.getAuthHeader()};
     return this.httpClient
       .get(this.baseUrl + url, data).pipe(catchError(this.errorHandler.bind(this)));
+  }
+  post(url: string,body:any, params?: any): Observable<any> {
+    const data = {params, headers: this.getPreAuthHeader()};
+    return this.httpClient
+      .post(this.baseUrl + url, body,data).pipe(catchError(this.errorHandler.bind(this)));
   }
 
   private errorHandler(response: any) {
@@ -42,5 +47,8 @@ export class HttpService {
     return {
       Authorization: `Bearer ${localStorage.getItem(this.AUTH_TOKEN)}`
     };
+  }
+  private getPreAuthHeader(): { [header: string]: string | string[]; } {
+    return  { 'Content-Type': 'application/json' }
   }
 }
