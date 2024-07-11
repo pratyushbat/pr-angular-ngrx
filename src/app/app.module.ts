@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +22,8 @@ import { ApiService } from './services/api.service';
 import { LoginComponent } from './components/login.component';
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
+import { rootReducer } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 @NgModule({
@@ -42,7 +44,7 @@ import { StoreModule } from '@ngrx/store';
     BrowserModule,
     AppRoutingModule,
     RouterModule, 
-    MaterialModule,FormsModule,HttpClientModule, StoreModule.forRoot({}, {})
+    MaterialModule,FormsModule,HttpClientModule, StoreModule.forRoot(rootReducer), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [
     provideAnimationsAsync(),
