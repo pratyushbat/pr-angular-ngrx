@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   selector: 'youtube-post',
   template: `
    post componennty
-    <youtube-user-list  [users]="this.users"></youtube-user-list>
+   <youtube-post-list [postList]="postList"></youtube-post-list>
   `,
   styles: [``]
 })
@@ -19,20 +19,28 @@ export class PostComponent implements OnInit {
   isAlive = true;
   loading = false;
   error = false;
-  users: any[]=[];
 
   constructor(private youtubeRepository: YoutubeRepository) {
   }
 
   ngOnInit() {
-    this.getInitUsers();
+    this.fetchData();
   }
 
-  getInitUsers() {
-    const observer$: [Observable<boolean>, Observable<User[]>, Observable<boolean>] = this.youtubeRepository.getUserList();
-    const userData$: Observable<User[]> = observer$[1];
-    userData$.subscribe(((data: any) => { this.users = data }));
-
+  fetchData() {
+    const observer$ = this.youtubeRepository.getAllPost();
+    const postData$ = observer$[1];
+    const loading$ = observer$[0];
+    const error$ = observer$[2];
+    postData$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
+      this.postList = data;
+    });
+    loading$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
+      this.loading = data;
+    });
+    error$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
+      this.error = data;
+    });
   }
 
  

@@ -1,10 +1,12 @@
 import { Injectable } from "@angular/core";
-import { getUserById, getUserError, getUserLoaded, getUserLoading, getUsers, RootReducerState } from "../reducers";
+import { getPostError, getPostLoaded, getPostLoading, getPosts, getUserById, getUserError, getUserLoaded, getUserLoading, getUsers, RootReducerState } from "../reducers";
 import { Store } from "@ngrx/store";
 import { ApiService } from "./api.service";
 import { combineLatest, Observable, take } from "rxjs";
 import { UserAddAction, UserDeleteAction, UserListErrorAction, UserListRequestAction, UserListSuccessAction, UserUpdateAction } from "../actions/user-action";
 import { User } from "../models/user";
+import { PostListErrorAction, PostListRequestAction, PostListSuccessAction } from "../actions/post-action";
+import { Post } from "../models/post";
 
 @Injectable()
 export class YoutubeRepository {
@@ -54,6 +56,8 @@ export class YoutubeRepository {
   
   getUserById(id: number, force = false) {
     // get user from reducer if exist otherwise from api
+    // state state is global state below
+    // state:{users:{load ,load,entites,ids,user}}
     const user$ = this.store.select(state => getUserById(state, id));
     user$.pipe(take(1)).subscribe(res => {
       if (force || !res) {
@@ -65,4 +69,23 @@ export class YoutubeRepository {
     });
     return user$;
   }
+
+  getAllPost(force = false): [Observable<boolean>, Observable<Post[]>, Observable<boolean>] {
+    const post$ = this.store.select(getPosts);
+    const loaded$ = this.store.select(getPostLoading);
+    const loading$ = this.store.select(getPostLoaded);
+    const getError$ = this.store.select(getPostError);
+    combineLatest([loaded$, loading$]).pipe(take(1)).subscribe((data) => {
+      if ((!data[0] && !data[1]) || force) {
+        this.store.dispatch(new PostListRequestAction());
+        this.apiService.getAllPost().subscribe(res => {
+          this.store.dispatch(new PostListSuccessAction({data: res}));
+        }, error => {
+          this.store.dispatch(new PostListErrorAction());
+        });
+      }
+    });
+    return [loading$, post$, getError$];
+  }
+
 }

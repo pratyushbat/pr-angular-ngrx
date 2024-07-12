@@ -25,6 +25,8 @@ import { StoreModule } from '@ngrx/store';
 import { rootReducer } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { UpdateUserComponent } from './components/update-user.component';
+import { PostListComponent } from './components/post-list.component';
+import { PostCardComponent } from './components/post-card.component';
 
 
 @NgModule({
@@ -39,7 +41,8 @@ import { UpdateUserComponent } from './components/update-user.component';
     UserListComponent,
     UserCardComponent,
     PostComponent,
-    LoginComponent,UpdateUserComponent
+    LoginComponent,UpdateUserComponent,
+    PostListComponent,PostCardComponent
   ],
   imports: [
     BrowserModule,

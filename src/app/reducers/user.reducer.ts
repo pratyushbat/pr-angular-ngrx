@@ -58,13 +58,73 @@ export function UserReducer(state = initialState, action: Action): UserReducerSt
             // const users = state.users.filter((data: any) => data.id != action.payload.data.id);
             // const updatedUser = users.concat(action.payload.data);
             // return { ...state, ...{ users: updatedUser } }
+
+
+
+
+
+            
+// let entities = {
+//     1: {a:'hblast', id:1,  block:'sadsa'},
+//     2: {a:'bhblast', id:2,block:'bsadsa'}
+    
+//   }
+//   let ids=[1,2];
+//   let state={entities,ids};
+//      console.log(state );    
+//   let data={a:'bhupdateblast', id:2,block:'bsadupdatesa'}  
+//   let entity={[data.id]:data};  
+//    let newEntities={...entities, ...entity};
+//   state={...state, entities:newEntities}
+//     console.log(state );
+
+            
         }
         case USER_ADD: {
+           
+           
+           
             const user:any=action.payload.data;
             const entity= {[user.id]:user};
             const newEntites={...state.entities,...entity};
             const newIds=StoreUtility.filterDuplicateIds( [...state.ids, user.id]);
             return { ...state, ...{ entities: newEntites,ids:newIds } }
+           
+           
+           
+           
+           
+ 
+
+            // let entities = {
+            //     1: {a:'hblast', id:1,  block:'sadsa'},
+            //     2: {a:'bhblast', id:2,block:'bsadsa'}
+                
+            //   }
+            //   let ids=[1,2];
+            //   let state={entities,ids};
+            //    console.log(entities );
+            //     console.log(ids );
+            //     console.log(state );
+                
+            //     console.log('-------post----------------')
+              
+            //   let data={a:'chblast', id:3,block:'csadsa'};
+            //   let entity={[data.id]:data};
+              
+            //    let newEntities={...entities, ...entity};
+            //    console.log(newEntities );
+            //   const newIds=[...ids,data.id];
+              
+            //    console.log(newIds );
+            //   state={...state, entities:newEntities, ids:newIds}
+            //   console.log('last state')
+            //     console.log(state ); 
+            
+            // old code
+           
+           
+           
             // const updatedUsers = state.users.concat(action.payload.data);
             // return { ...state, ...{ users: updatedUsers } };
 
