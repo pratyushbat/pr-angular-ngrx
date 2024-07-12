@@ -7,6 +7,9 @@ import {YoutubeRepository} from '../services/youtube-repository';
 @Component({
   selector: 'youtube-update-user',
   template: `
+  <h2 mat-dialog-title>Add /update </h2>
+  <mat-dialog-content>
+  
     <form [formGroup]="userForm" (ngSubmit)="this.userForm.valid && this.addOrUpdateUser()">
       <div fxLayout="column" fxLayoutAlign="center stretch">
         <mat-form-field>
@@ -22,6 +25,7 @@ import {YoutubeRepository} from '../services/youtube-repository';
         </button>
       </div>
     </form>
+    </mat-dialog-content>
   `,
   styles: [``]
 })
@@ -49,6 +53,12 @@ export class UpdateUserComponent implements OnInit {
     }
   }
 
+  addOrUpdateuser(){
+    if(this.data)
+      this.updateUser();
+    else
+    this.addUser()
+  }
   updateUser() {
     const updatedUser = {...this.data, ...this.userForm.value};
     this.youtubeRepo.updateUser(updatedUser);

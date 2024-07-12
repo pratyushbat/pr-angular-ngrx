@@ -2,11 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { YoutubeRepository } from '../services/youtube-repository';
 import { Observable, takeWhile } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateUserComponent } from '../components/update-user.component';
 
 @Component({
   selector: 'youtube-users',
   template: `
     <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px">
+    <button  (click)="tryAgain()" mat-raised-button color="primary">Call API</button>
       <youtube-user-list *ngIf="!this.loading && !this.error" [users]="this.users"></youtube-user-list>
       <mat-spinner *ngIf="this.loading"></mat-spinner>
       <youtube-error (reload)="this.tryAgain()" *ngIf="this.error && !loading"></youtube-error>
@@ -23,7 +26,7 @@ export class UsersComponent implements OnDestroy {
   isAlive = true;
 
   //compoennet-> repository service ->apiservice->httpService-> httpclient
-  constructor(private youtubeRepository: YoutubeRepository) {
+  constructor(private youtubeRepository: YoutubeRepository ,private dialog:MatDialog) {
   }
 
   ngOnInit() {
@@ -51,9 +54,13 @@ export class UsersComponent implements OnDestroy {
   }
 
   addUser() {
-    // this.dialog.open(UpdateUserComponent, {
-    //   width: '256px'
-    // });
+    this.dialog.open(UpdateUserComponent, {
+      width: '356px',
+      height:'300px',
+      enterAnimationDuration:'500ms',
+      exitAnimationDuration:'200ms'
+    });
+    
   }
 
 }

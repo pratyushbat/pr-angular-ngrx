@@ -3,7 +3,7 @@ import {User} from '../models/user';
 import {YoutubeRepository} from '../services/youtube-repository';
 import {MatDialog} from '@angular/material/dialog';
 // import {UpdateUserComponent} from './update-user.component';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { UpdateUserComponent } from './update-user.component';
 
 @Component({
@@ -30,7 +30,7 @@ export class UserCardComponent {
   @Input() user!: User;
 
   constructor(private youtubeRepo: YoutubeRepository,
-              private dialog: MatDialog, private router: Router) {
+              private dialog: MatDialog, private router: Router,private actRoutes: ActivatedRoute) {
   }
 
   delete() {
@@ -44,6 +44,6 @@ export class UserCardComponent {
   }
 
   open() {
-    this.router.navigate(['user', this.user.id]);
+    this.router.navigate(['dashboard/user', this.user.id]);
   }
 }
