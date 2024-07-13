@@ -73,6 +73,7 @@ export function PostReducer(state = initialState, action: Action): PostReducerSt
     case COMMENT_ADD_ACTION: {
       const postId = action.payload.postId;
       const comment = action.payload.data;
+      // state cannot be changed so make copy
       const oldPost: Post = JSON.parse(JSON.stringify(state.entities[postId]));
       oldPost.comments.push(comment);
       const obj = {[postId]: oldPost};

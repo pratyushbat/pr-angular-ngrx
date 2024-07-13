@@ -5,8 +5,8 @@ import { ApiService } from "./api.service";
 import { combineLatest, Observable, take } from "rxjs";
 import { UserAddAction, UserDeleteAction, UserListErrorAction, UserListRequestAction, UserListSuccessAction, UserUpdateAction } from "../actions/user-action";
 import { User } from "../models/user";
-import { PostListErrorAction, PostListRequestAction, PostListSuccessAction } from "../actions/post-action";
-import { Post } from "../models/post";
+import { CommentAddAction, CommentDeleteAction, CommentUpdateAction, PostListErrorAction, PostListRequestAction, PostListSuccessAction } from "../actions/post-action";
+import { Comment, Post } from "../models/post";
 
 @Injectable()
 export class YoutubeRepository {
@@ -87,5 +87,16 @@ export class YoutubeRepository {
     });
     return [loading$, post$, getError$];
   }
+  
+  addComment(comment: Comment, postId: number) {
+    this.store.dispatch(new CommentAddAction({data: comment, postId}));
+  }
 
+  updateComment(comment: Comment, postId: number) {
+    this.store.dispatch(new CommentUpdateAction({data: comment, postId}));
+  }
+
+  deleteComment(commentId: number, postId: number) {
+    this.store.dispatch(new CommentDeleteAction({id: commentId, postId}));
+  }
 }
