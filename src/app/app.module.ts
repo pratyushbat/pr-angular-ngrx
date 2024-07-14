@@ -27,6 +27,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { UpdateUserComponent } from './components/update-user.component';
 import { PostListComponent } from './components/post-list.component';
 import { PostCardComponent } from './components/post-card.component';
+import { LearnrxjsComponent } from './components/learnrxjs/learnrxjs.component';
+import { ExtraComponent } from './components/extra/extra.component';
 
 
 @NgModule({
@@ -42,7 +44,7 @@ import { PostCardComponent } from './components/post-card.component';
     UserCardComponent,
     PostComponent,
     LoginComponent,UpdateUserComponent,
-    PostListComponent,PostCardComponent
+    PostListComponent,PostCardComponent, LearnrxjsComponent, ExtraComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { UsersComponent } from './container/users.component';
 import { ViewUserComponent } from './container/view-user.component';
 import { PostComponent } from './container/post.component';
 import { LoginComponent } from './components/login.component';
+import { LearnrxjsComponent } from './components/learnrxjs/learnrxjs.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: '/login', pathMatch: 'full' },
@@ -14,6 +15,7 @@ const routes: Routes = [
     {path: '', redirectTo:'users', pathMatch:"full" },
     {path: 'users', component: UsersComponent},
     {path: 'posts', component: PostComponent},
+    {path: 'rxjs', component: LearnrxjsComponent},
     {path: 'user/:id', component: ViewUserComponent},
   ]
 },
